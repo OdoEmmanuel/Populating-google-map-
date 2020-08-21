@@ -32,13 +32,30 @@
                         :center="mapCenter"
                         :zoom="10"
                         style="width: 100%; height: 440px;"
+                        @click="handleMapClick"
                     >
+                        <gmap-info-window
+                            :options="infoWindowOptions"
+                            :position="infoWindowPosition"
+                            :opened="infoWindowOpened"
+                            @closeclick="handleInfoWindowClose"
+                        >
+
+                        <div class="info-window">
+
+                            <h2 v-text="activeResturant.name"></h2>
+                            <h5 v-text="'Hours:' + activeResturant.hours"></h5>
+                            <p v-text="activeResturant.address"></p>
+                            <p v-text="activeResturant.city + ', ' + activeResturant.state"></p>
+                        </div>
+                        </gmap-info-window>
                         <gmap-maker
                             v-for="(r, index) in resturants"
                             :key="r.id"
                             :position="getPosition(r)"
                             :clickable="true"
                             :draggable="false"
+                            @click="handleMarkerClicked(r)"
                         ></gmap-maker>
                     </gmap-map>
                 </div>

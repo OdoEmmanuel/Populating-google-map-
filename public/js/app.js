@@ -53214,7 +53214,15 @@ var app = new Vue({
   el: '#app',
   data: function data() {
     return {
-      resturants: []
+      resturants: [],
+      infoWindowOption: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      },
+      activeResturant: {},
+      infoWindowOpened: false
     };
   },
   created: function created() {
@@ -53232,6 +53240,24 @@ var app = new Vue({
         lat: parseFloat(r.latitude),
         lng: parseFloat(r.longitude)
       };
+    },
+    handleMarkerClicked: function handleMarkerClicked(r) {
+      this.activeResturant = r;
+      this.infoWindowOpened = true;
+    },
+    handleInfoWindowClose: function handleInfoWindowClose() {
+      this.activeResturant = {};
+      this.infoWindowOpened = false;
+    },
+    handleMapClick: function handleMapClick(e) {
+      this.resturants.push({
+        name: 'Deicious Burgers',
+        city: 'Ikeja',
+        state: 'Lagos',
+        hours: '8:00am-7:00pm',
+        latitude: e.latLng.lat(),
+        longitude: e.latLng.lng()
+      });
     }
   },
   computed: {
@@ -53246,6 +53272,12 @@ var app = new Vue({
       return {
         lat: parseFloat(this.resturants[0].latitude),
         lng: parseFloat(this.resturants[0].longitude)
+      };
+    },
+    infoWindowPosition: function infoWindowPosition() {
+      return {
+        lat: parseFloat(this.activeResturant.latitude),
+        lng: parseFloat(this.activeResturant.longitude)
       };
     }
   }
